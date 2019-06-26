@@ -8,7 +8,7 @@ Klavye basımlarını raporlayan araç.
 
 - [Kurulum Aşamaları](#Kurulum-A%C5%9Famalar%C4%B1)
 - [Faydalı Notlar](#Faydal%C4%B1-Notlar)
-- [Hata Notları](#Hata-Notlar%C4%B1)
+- [Hata Çözümleri](#Hata-%C3%87%C3%B6z%C3%BCmleri)
   - [Cannot import 'pywintypes' Çözümü](#Cannot-import-pywintypes-%C3%87%C3%B6z%C3%BCm%C3%BC)
   - [\` Gibi özel karakterlerin oluşturulamaması](#Gibi-%C3%B6zel-karakterlerin-olu%C5%9Fturulamamas%C4%B1)
 - [Harici Linkler](#Harici-Linkler)
@@ -18,19 +18,23 @@ Klavye basımlarını raporlayan araç.
 
 Python'ın `pip install -r requirements.txt` komutu ile gerekli paketleri indirebilirsin
 
-- [Python 3.7], Kodun dili 🙄
+- [Python 3.7], Programın yazılma dili 🙄
 - [PyWinHook], Klavye'ye bağlanmak için kullanılır
-- [pywin32] yada [pywin32-conda]
-  - İndirlmezse `ImportError: No module named pythoncom` hatası gelir
+- [PyGame], klavyeyi dinlemek için kullanılır
 
 ## Faydalı Notlar
 
+Sakın ama sakın eskimiş `pywin32` ve `pyHook` modüllerini kullanma ⚠
+
+- Log yapısı için koddaki `parseData`'ya bakın
 - [event.Time](https://stackoverflow.com/a/40049296/9770490) bilgilsayarın açık olma süresi imiş 😢
-- `logging` paketi yerine kendi `file.flush()` kullanılıyor
+- `logging` paketi yerine `file.flush()` kullanılıyor
+- Özel karakterin 2'li yazılma sorununu gidermek için `pythoncom` yerine `pygame` modülü üzerinden `pump` yapıldı
+- [auto-py-to-exe] ile `exe` oluşturabilirsin
 
 > [PyHook] tuş algılanmalarında çok fazla probleme sebep olduğundan [PyWinHook] ile değiştirildi.
 
-## Hata Notları
+## Hata Çözümleri
 
 ### Cannot import 'pywintypes' Çözümü
 
@@ -43,7 +47,10 @@ Python'ın `pip install -r requirements.txt` komutu ile gerekli paketleri indire
 
 PyWinHook her tıklama başına çalıştığından, 2li kombinasyonlarda sorun oluşmakta 😥
 
+- `pythoncom` yerine `pygame` modülü üzerinden `pump` işlemleri yapılmalı
 - Klavyeyi değiştirip eski haline alınca düzelir (_TR - EN, EN - TR_)
+
+> Stackoverflow cevabım için [buraya](https://stackoverflow.com/a/56776934/9770490) bakabailirsin.
 
 ## Harici Linkler
 
@@ -52,6 +59,7 @@ PyWinHook her tıklama başına çalıştığından, 2li kombinasyonlarda sorun 
 - [CTRL + C'ye tepki verme (Çoklu tuş Algılama)](https://stackoverflow.com/questions/4581772/using-pyhook-to-respond-to-key-combination-not-just-single-keystrokes/4905495)
 - [Bazı tuşları bloklama](http://code.activestate.com/recipes/553270-using-pyhook-to-block-windows-keys/)
 
+[pygame]: https://pypi.org/project/pygame/
 [pyhook]: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook
 [pywinhook]: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pywinhook
 [pywin32]: https://pypi.org/project/pywin32/

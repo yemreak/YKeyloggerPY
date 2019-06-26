@@ -1,3 +1,2 @@
-pywin32==224
+pygame==1.9.6
 pyWinhook==1.6.1
-

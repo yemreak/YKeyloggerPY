@@ -26,6 +26,7 @@ Python'ın `pip install -r requirements.txt` komutu ile gerekli paketleri indire
 
 Sakın ama sakın eskimiş `pywin32` ve `pyHook` modüllerini kullanma ⚠
 
+- [Son çıkan sürüm]
 - Log yapısı için koddaki `parseData`'ya bakın
 - [event.Time](https://stackoverflow.com/a/40049296/9770490) bilgilsayarın açık olma süresi imiş 😢
 - `logging` paketi yerine `file.flush()` kullanılıyor
@@ -89,3 +90,5 @@ PyWinHook her tıklama başına çalıştığından, 2li kombinasyonlarda sorun 
 [bağış aylık]: https://www.patreon.com/yemreak/
 
 <!-- İletişim Sonu -->
+
+[son çıkan sürüm]: https://github.com/yedhrab/YAnalyser/releases/tag/v1.0.0

@@ -58,6 +58,7 @@ PyWinHook her tıklama başına çalıştığından, 2li kombinasyonlarda sorun 
 - [PumbMessage yerine asenkron hooklama](https://stackoverflow.com/a/14249096/9770490)
 - [CTRL + C'ye tepki verme (Çoklu tuş Algılama)](https://stackoverflow.com/questions/4581772/using-pyhook-to-respond-to-key-combination-not-just-single-keystrokes/4905495)
 - [Bazı tuşları bloklama](http://code.activestate.com/recipes/553270-using-pyhook-to-block-windows-keys/)
+- [Keylogger Örneği](https://www.logixoft.com/en-eu/index)
 
 [pygame]: https://pypi.org/project/pygame/
 [pyhook]: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook

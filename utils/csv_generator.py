@@ -4,6 +4,21 @@
 import os, pandas
 
 #############################################
+#                 IPYNB ALANI           
+#############################################
+
+""" NAME = "28.06.2019"
+DIR_LOGS = "keylogs"
+PATH_TO_LOGS = f"/content/drive/My Drive/Documents/KeyLogs/Logs/{NAME}.rar"
+PATH_TO_CSV = f"/content/drive/My Drive/Documents/KeyLogs/Csv/{NAME}.csv"
+
+!rm "{PATH_TO_CSV}"
+!mkdir -p "{DIR_LOGS}"
+!cp "{PATH_TO_LOGS}" "{DIR_LOGS}"
+!cd "{DIR_LOGS}" && unrar e *.rar
+!rm -rf "{DIR_LOGS}"/*.rar """
+
+#############################################
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
 
@@ -35,12 +50,15 @@ DATA_FRAME = pandas.DataFrame(columns=COLUMNS)
 COL_SIZE = len(DATA_FRAME.columns)
 
 loglist = os.listdir(DIR_LOGS)
+num_log = len(loglist)
 for log in loglist:
     logpath = os.path.join(DIR_LOGS, log)
+    num_log = num_log - 1
     
     try:
       if DEBUG:
         print(f"The file that is converting: '{logpath}'")
+        print(f"Remaining File: {num_log}")
     
       if os.path.isfile(logpath):
           with open(logpath, "r", encoding = "utf-8") as file:
@@ -66,4 +84,7 @@ for log in loglist:
       print(e)
       print()
       
-    print(len(pandas.read_csv(PATH_TO_CSV)))
+    if DEBUG:
+      print(f"Size of csv: {sum(1 for _ in pandas.read_csv(PATH_TO_CSV))}")
+
+print("Finished")

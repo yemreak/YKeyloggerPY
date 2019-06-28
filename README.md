@@ -6,6 +6,7 @@ Klavye basımlarını raporlayan araç.
 
 ## İçerikler <!-- omit in toc -->
 
+- [Kullanım Şekli](#Kullan%C4%B1m-%C5%9Eekli)
 - [Kurulum Aşamaları](#Kurulum-A%C5%9Famalar%C4%B1)
 - [Faydalı Notlar](#Faydal%C4%B1-Notlar)
 - [Hata Çözümleri](#Hata-%C3%87%C3%B6z%C3%BCmleri)
@@ -13,6 +14,18 @@ Klavye basımlarını raporlayan araç.
   - [\` Gibi özel karakterlerin oluşturulamaması](#Gibi-%C3%B6zel-karakterlerin-olu%C5%9Fturulamamas%C4%B1)
 - [Harici Linkler](#Harici-Linkler)
 - [Destek ve İletişim](#Destek-ve-%C4%B0leti%C5%9Fim)
+
+## Kullanım Şekli
+
+- **Release** kısmından `exe`'li sürümünü indirin
+- <kbd>WINDOWS</kbd> + <kbd>R</kbd> kısayoluna basıp `shell:startup` yazın <kbd>ENTER</kbd>'a basın
+- Çıkan dizine `exe`'li dosyayı yerleştirin
+- Bu sayede PC her açıldığında aktif olacaktır
+- Rapolamayı `~\Documents\Keylogs` dizinine yapar
+
+> Kapatmak için görev yöneticisini kullanın
+
+![terminate_script](res/terminate_script.png)
 
 ## Kurulum Aşamaları
 

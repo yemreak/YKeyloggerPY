@@ -6,8 +6,9 @@
 ######################################################
 
 try:
-    import pyWinhook, pygame, atexit
+    import pyWinhook, pygame
     from utils import yLogger, yShortcutHandler, yDebugger
+    from utils.yConfig import KEY_LIMIT
 except ImportError as ext:
     import os
 
@@ -24,8 +25,6 @@ except ImportError as ext:
 
     quit()
 
-KEY_LIMIT = 1
-
 def OnKeyboardEvent(event):
     yShortcutHandler.handleShortcutPressed(event)
     yLogger.regData(event)
@@ -33,18 +32,10 @@ def OnKeyboardEvent(event):
 
     return True
 
-def onexit():
-    try:
-        CONTEXT_FILE.close()
-    except:
-        pass
-
 def pumpMessage():
     pygame.init()
     while True:
         pygame.event.pump()
-
-atexit.register(onexit) # TODO: Bunu nasıl aktif kılarım bilmiyorum
 
 yDebugger.setLogLvl(2)
 hooks_manager = pyWinhook.HookManager()

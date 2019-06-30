@@ -1,12 +1,12 @@
 from datetime import datetime
 from utils import yDebugger
+from utils.yConfig import LOG_ACTIVE
 import os, pandas
 
 #############################################
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
 
-LOG_ACTIVE = True
 LOG_DIR = os.path.join(os.environ['userprofile'], "Documents", "KeyLogs")
 LOG_FILE = datetime.now().strftime('%d-%b-%Y-%H-%M-%S') + ".csv"
 

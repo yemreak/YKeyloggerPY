@@ -1,4 +1,5 @@
 from utils import yDebugger
+from utils.yConfig import SHORTCUT
 
 if __name__ == "__main__":
     print("Yardımcı modüldür, direkt olarak kullanılamaz")
@@ -53,8 +54,6 @@ Transition:  0
 #############################################
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
-
-SHORTCUT = (162, 164, 36) # CTRL + ALT + HOME
 
 isShortcut = False
 list_press = [False, False, False]

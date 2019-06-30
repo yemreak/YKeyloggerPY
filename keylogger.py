@@ -11,11 +11,11 @@ try:
     from pygame.event import pump
     from utils import yLogger, yShortcutHandler, yDebugger
     from utils.yConfig import KEY_LIMIT
-except ImportError as ext:
-    import os
 
-    path = pyWinhookFile
-    dllpath = os.path.join(path, "..", "..", "pywin32_system32")
+except ImportError as ext:
+    from os.path import join as pathJoin
+
+    dllpath = pathJoin(pyWinhookFile, "..", "..", "pywin32_system32")
     print("\n", ext)
     print(" DLL dosyaları koypalanmalı!")
     print()

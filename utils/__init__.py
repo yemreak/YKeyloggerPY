@@ -1,6 +1,6 @@
-import os
+from os import system
 
-os.system("cls")
+system("cls")
 print("Bu modül Yunus Emre Ak tarafından yazılmıştır")
 print("> Lütfen o düşündüğünüz işler için kullanmayın :)")
 print()

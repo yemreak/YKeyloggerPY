@@ -2,13 +2,14 @@ from datetime import datetime
 from utils.yDebugger import debugDebug, debugInfo 
 from utils.yConfig import LOG_ACTIVE
 from pandas import DataFrame
-import os
+from os.path import join as pathJoin, exists as pathExist
+from os import environ, mkdir as pathMakedirs
 
 #############################################
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
 
-LOG_DIR = os.path.join(os.environ['userprofile'], "Documents", "KeyLogs")
+LOG_DIR = pathJoin(environ['userprofile'], "Documents", "KeyLogs")
 LOG_FILE = datetime.now().strftime('%d-%b-%Y-%H-%M-%S') + ".csv"
 
 COLUMNS = [
@@ -72,10 +73,10 @@ def openFile():
         debugInfo("Dosyaya raporlama kapalı!")
         return
 
-    if not os.path.exists(LOG_DIR):
-        os.makedirs(LOG_DIR)
+    if not pathExist(LOG_DIR):
+        pathMakedirs(LOG_DIR)
 
-    return open(os.path.join(LOG_DIR, LOG_FILE), "a+", encoding="utf-8")
+    return open(pathJoin(LOG_DIR, LOG_FILE), "a+", encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -1,1 +1,0 @@
-# Buraya modül takviyesi yazılabilir

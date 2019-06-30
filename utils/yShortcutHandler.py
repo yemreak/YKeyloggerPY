@@ -1,4 +1,4 @@
-from utils import yDebugger
+from utils.yDebugger import debugInfo
 from utils.yConfig import SHORTCUT
 
 if __name__ == "__main__":
@@ -72,7 +72,7 @@ def refreshShortcutPress():
     isShortcut = True
 
 def onShortCutPressed():
-    yDebugger.debugInfo("Kısayol aktif")
+    debugInfo("Kısayol aktif")
 
 # TODO: Keydown ile halledebilirsim
 #       Her keye basıldığında -> True, çekildiğinde -> False

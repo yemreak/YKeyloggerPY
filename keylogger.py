@@ -6,13 +6,15 @@
 ######################################################
 
 try:
-    import pyWinhook, pygame
+    from pyWinhook import HookManager, __file__ as pyWinhookFile
+    from pygame import init
+    from pygame.event import pump
     from utils import yLogger, yShortcutHandler, yDebugger
     from utils.yConfig import KEY_LIMIT
 except ImportError as ext:
     import os
 
-    path = pyWinhook.__file__
+    path = pyWinhookFile
     dllpath = os.path.join(path, "..", "..", "pywin32_system32")
     print("\n", ext)
     print(" DLL dosyaları koypalanmalı!")
@@ -33,12 +35,12 @@ def OnKeyboardEvent(event):
     return True
 
 def pumpMessage():
-    pygame.init()
+    init()
     while True:
-        pygame.event.pump()
+        pump()
 
 yDebugger.setLogLvl(2)
-hooks_manager = pyWinhook.HookManager()
+hooks_manager = HookManager()
 hooks_manager.KeyDown = OnKeyboardEvent
 hooks_manager.HookKeyboard()
 pumpMessage()

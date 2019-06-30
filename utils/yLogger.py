@@ -1,7 +1,8 @@
 from datetime import datetime
-from utils import yDebugger
+from utils.yDebugger import debugDebug, debugInfo 
 from utils.yConfig import LOG_ACTIVE
-import os, pandas
+from pandas import DataFrame
+import os
 
 #############################################
 #            EVRENSEL DEĞİŞKENLER           
@@ -29,7 +30,7 @@ COLUMNS = [
 
 def init():
     global DATA_FRAME, CONTEXT_FILE
-    DATA_FRAME = pandas.DataFrame(columns=COLUMNS)
+    DATA_FRAME = DataFrame(columns=COLUMNS)
     CONTEXT_FILE = openFile()
 
 def regData(event):
@@ -53,14 +54,14 @@ def regData(event):
     assert len(COLUMNS) == len(datas), "Sütun ile veri sayısı aynı değil :("
 
     DATA_FRAME.loc[len(DATA_FRAME)] = datas
-    yDebugger.debugInfo(datas)
+    debugInfo(datas)
 
 def logDirectly():
     if LOG_ACTIVE:
         DATA_FRAME.to_csv(CONTEXT_FILE, header=CONTEXT_FILE.tell()==0)
         DATA_FRAME.drop(DATA_FRAME.index, inplace=True)
         CONTEXT_FILE.flush()
-        yDebugger.debugDebug(f"'{CONTEXT_FILE.name}' dosyasına kaydedildi")
+        debugDebug(f"'{CONTEXT_FILE.name}' dosyasına kaydedildi")
 
 def logOnReach(limit):
     if len(DATA_FRAME) >= limit:
@@ -68,7 +69,7 @@ def logOnReach(limit):
 
 def openFile():
     if not LOG_ACTIVE:
-        yDebugger.debugInfo("Dosyaya raporlama kapalı!")
+        debugInfo("Dosyaya raporlama kapalı!")
         return
 
     if not os.path.exists(LOG_DIR):

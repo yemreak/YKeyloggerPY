@@ -15,13 +15,13 @@ except ImportError as ext:
     path = pyWinhook.__file__
     dllpath = os.path.join(path, "..", "..", "pywin32_system32")
     print("\n", ext)
-    print(f" DLL dosyaları koypalanmalı!")
+    print(" DLL dosyaları koypalanmalı!")
     print()
-    print(f"     DLL dosyalarının dizini: ")
+    print("     DLL dosyalarının dizini: ")
     print(f"         {dllpath}")
     print()
-    print(f"     Kopyalanacağı dizin:")
-    print(f"         C:\Windows\System32")
+    print("     Kopyalanacağı dizin:")
+    print("         C:\\Windows\\System32")
 
     quit()
 
